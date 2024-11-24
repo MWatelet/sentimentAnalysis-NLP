@@ -6,6 +6,10 @@ from app.model.transformermodel import TransformerModel
 from app.model.vadermodel import VaderModel
 from app.enum.model import Model
 
+HOST = '0.0.0.0'
+PORT = 80
+DEBUG = True
+
 app = Flask(__name__)
 
 models = {
@@ -59,4 +63,4 @@ def get_sentiment():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, debug=True)
+    app.run(host=HOST, port=PORT, debug=DEBUG)
