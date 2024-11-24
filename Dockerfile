@@ -1,30 +1,21 @@
-FROM python:3.11-alpine
+FROM python:3.11-slim
 
-# Install build tools, compilers, and libraries
-RUN apk add --no-cache \
-    build-base \
-    gcc \
-    g++ \
-    python3-dev \
-    libffi-dev \
-    openssl-dev \
-    musl-dev \
-    linux-headers
-
-# Set the working directory
 WORKDIR /code
 
-# Copy requirements and install dependencies
 COPY ./requirements.txt /code/requirements.txt
 
-# Upgrade pip and install dependencies
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    libffi-dev \
+    libssl-dev \
+    && apt-get clean
 
-# Copy application files
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r /code/requirements.txt
+
 COPY ./app /code/app
 
 ENV PYTHONPATH="/code:${PYTHONPATH}"
 
-# Run the application
 CMD ["python", "app/main.py"]
