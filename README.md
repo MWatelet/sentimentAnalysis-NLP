@@ -24,7 +24,7 @@ This is the main Flask application that exposes two endpoints:
    - **Functionality**:  
      - Uses a CSV data file containing reviews and sentiment labels (positive or negative).  
      - Benchmarks the pre-trained models on the data, generating two graphs:  
-       - Hits (correct predictions)  
+       - Successes (correct predictions)  
        - Misses (incorrect predictions)  
      - Outputs the graphs for visual comparison of model performance.
 
