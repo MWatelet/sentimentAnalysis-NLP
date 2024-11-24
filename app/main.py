@@ -45,6 +45,10 @@ def analyze_sentiment_of_review_with_models(review: str):
     return results
 
 
+"""
+route for a user-friendly interface to input a text and get the sentiment analysis from the models
+"""
+
 @app.route("/", methods=['POST', 'GET'])
 def review_page():
     sentiments = []
@@ -54,11 +58,11 @@ def review_page():
     return render_template("index.html", sentiments=sentiments)
 
 
-@app.route("/get_sentiment", methods=['GET'])
+@app.route("/api/get_sentiment", methods=['GET'])
 def get_sentiment():
-    review = request.json['review']
-    assert type(review) == str
-    sentiments = analyze_sentiment_of_review_with_models(review)
+    text = request.json['text']
+    assert type(text) == str
+    sentiments = analyze_sentiment_of_review_with_models(text)
     return list(map(lambda x: x.to_json(), sentiments))
 
 
