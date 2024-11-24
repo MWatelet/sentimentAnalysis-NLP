@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sentiment Analysis Demo</title>
+</head>
+<body>
+    <h1>Sentiment Analyzer</h1>
+    <!-- Form starts here -->
+    <form action="/" method="POST">
+        <label for="review">Enter a review here:</label>
+        <textarea name="review" id="review"></textarea>
+        <button type="submit" value="analyze">Analyze</button>
+    </form> <!-- Form ends here -->
+
+    <!-- Results section (completely separate from the form) -->
+    <div>
+        <label>Result:</label>
+        {% if sentiment %}
+            <p>{{ sentiment }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
