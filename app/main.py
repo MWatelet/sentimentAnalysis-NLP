@@ -28,11 +28,12 @@ def review_page():
     return render_template("index.html", sentiments=sentiments)
 
 
-@app.route("get_sentiment", methods=['GET'])
+@app.route("/get_sentiment", methods=['GET'])
 def get_sentiment():
     review = request.json['review']
+    assert type(review) == str
     sentiments = analyze_sentiment_with_models(review)
-    return {"sentiments": sentiments}
+    return sentiments
 
 
 if __name__ == "__main__":
