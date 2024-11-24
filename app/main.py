@@ -1,22 +1,43 @@
 from flask import Flask, render_template, request
+
+from app.model.flairmodel import FlairModel
 from app.model.textblobmodel import TextBlobModel
+from app.model.transformermodel import TransformerModel
 from app.model.vadermodel import VaderModel
+from app.enum.model import Model
 
 app = Flask(__name__)
 
 models = {
-    "textblob": TextBlobModel(),
-    "vader": VaderModel(),
-    # "flair" : FlairModel(),
-    # "transformer" : TransformerModel()
+    Model.TB.value: TextBlobModel(),
+    Model.V.value: VaderModel(),
+    Model.F.value: FlairModel(),
+    Model.T.value: TransformerModel()
 }
+
+
+class ModelResult:
+
+    def __init__(self, model, sentiment):
+        self.model = model
+        self.sentiment = sentiment
+
+    def to_json(self):
+        return {
+            "model": self.model,
+            "sentiment": self.sentiment
+        }
 
 
 def analyze_sentiment_of_review_with_models(review: str):
     results = []
-    for key, model in models.items():
-        sentiment = model.analyze_sentiment_of_text(review)
-        results.append((key, sentiment))
+    for model_name, model in models.items():
+        try:
+            sentiment = model.analyze_sentiment_of_text(review)
+            results.append(ModelResult(model_name, sentiment))
+        except Exception as e:
+            print(f"Error analyzing sentiment with model {model_name}: {e}")
+            results.append(ModelResult(model_name, "Error"))
     return results
 
 
@@ -33,8 +54,8 @@ def review_page():
 def get_sentiment():
     review = request.json['review']
     assert type(review) == str
-    sentiments = analyze_sentiment_with_models(review)
-    return sentiments
+    sentiments = analyze_sentiment_of_review_with_models(review)
+    return list(map(lambda x: x.to_json(), sentiments))
 
 
 if __name__ == "__main__":

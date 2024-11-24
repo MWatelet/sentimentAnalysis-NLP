@@ -20,8 +20,8 @@
         <label>Result:</label>
         <ul>
             {% if sentiments|length > 0 %}
-                {% for model, sentiment in sentiments %}
-                    <li>{{ model }} : {{ sentiment }}</li>
+                {% for item in sentiments %}
+                    <li>{{ item.model }} : {{ item.sentiment }}</li>
                 {% endfor %}
             {% endif %}
         </ul>
