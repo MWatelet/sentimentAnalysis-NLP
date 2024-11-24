@@ -18,9 +18,13 @@
     <!-- Results section (completely separate from the form) -->
     <div>
         <label>Result:</label>
-        {% if sentiment %}
-            <p>{{ sentiment }}</p>
-        {% endif %}
+        <ul>
+            {% if sentiments|length > 0 %}
+                {% for model, sentiment in sentiments %}
+                    <li>{{ model }} : {{ sentiment }}</li>
+                {% endfor %}
+            {% endif %}
+        </ul>
     </div>
 </body>
 </html>
