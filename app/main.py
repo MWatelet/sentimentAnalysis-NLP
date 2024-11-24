@@ -1,20 +1,21 @@
 from flask import Flask, render_template, request
 from app.model.textblobmodel import TextBlobModel
+from app.model.vadermodel import VaderModel
 
 app = Flask(__name__)
 
 models = {
     "textblob": TextBlobModel(),
-    # "vader" : VaderModel(),
+    "vader": VaderModel(),
     # "flair" : FlairModel(),
     # "transformer" : TransformerModel()
 }
 
 
-def analyze_sentiment_with_models(review: str):
+def analyze_sentiment_of_review_with_models(review: str):
     results = []
     for key, model in models.items():
-        sentiment = model.analyze_sentiment(review)
+        sentiment = model.analyze_sentiment_of_text(review)
         results.append((key, sentiment))
     return results
 
@@ -24,7 +25,7 @@ def review_page():
     sentiments = []
     if request.method == 'POST':
         review = request.form['review']
-        sentiments = analyze_sentiment_with_models(review)
+        sentiments = analyze_sentiment_of_review_with_models(review)
     return render_template("index.html", sentiments=sentiments)
 
 
